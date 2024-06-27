@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User List</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <style>
+        .top-right {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="top-right">
+        <a type="button" class="btn btn-secondary" href="/">Go Home</a>
+    </div>
+    <h2 class="text-center mb-4">User List</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Full Name</th>
+            <th>Phone Number</th>
+            <th>Roles</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Example row, this should be populated dynamically -->
+        <tr th:each="user, status : ${users}">
+            <td th:text="${user.id}">ID</td>
+            <td th:text="${user.username}">Username</td>
+            <td th:text="${user.fullName}">Full Name</td>
+            <td th:text="${user.phoneNumber}">Phone Number</td>
+            <td th:text="${user.rolesAsString}"></td>
+            <td>
+                <a type="button" class="btn btn-primary btn-sm" th:href="@{'/super/edit/' + ${user.id}}">Edit</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

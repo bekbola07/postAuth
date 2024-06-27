@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Your Website</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div th:if="${roles}" class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a th:if="${roles.contains('ROLE_ADMIN')}" href="/post" class="btn btn-primary">Admin</a>
+                </li>
+                <li class="nav-item">
+                    <a th:if="${roles.contains('ROLE_OPERATOR')}" href="/message" class="btn btn-primary">Operator</a>
+                </li>
+                <li class="nav-item">
+                    <a th:if="${roles.contains('ROLE_SELLER')}" href="/seller" class="btn btn-primary">Seller</a>
+                </li>
+                <li class="nav-item">
+                    <a th:if="${roles.contains('ROLE_SUPER_ADMIN')}" href="/super" class="btn btn-primary">Super Admin</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/auth/logout" class="btn btn-primary">Log out</a>
+                </li>
+            </ul>
+        </div>
+        <div th:unless="${roles}" class="collapse navbar-collapse" >
+            <ul class="navbar-nav ms-auto">
+
+            <li class="nav-item">
+                <a href="/auth/login" class="btn btn-primary">Login</a>
+            </li>
+            <li class="nav-item">
+                <a href="/auth/register" class="btn btn-primary">Register</a>
+            </li>
+            </ul>
+        </div>
+
+    </div>
+</nav>
+<div class="container mt-5">
+
+
+<!--    <div class="d-flex justify-content-end mb-3">-->
+<!--        <a href="/post" class="btn btn-primary"> Admin</a>-->
+<!--    </div>-->
+<!--    <div class="d-flex justify-content-end mb-3">-->
+<!--    </div>-->
+<!--    <div class="d-flex justify-content-end mb-3">-->
+<!--    </div>-->
+
+
+    <div class="row">
+        <div class="col-md-4" th:each="post : ${posts}">
+            <div class="card mb-4">
+                <img th:src="@{'/uploads/' + ${post.photoPath}}" class="card-img-top" alt="Post Image">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${post.title}">Post Title</h5>
+                    <p class="card-text" th:text="${post.description}">Post description goes here.</p>
+                    <p class="card-text">
+                        <small class="text-muted" th:text="${post.created_at}">Post Date</small>
+                    </p>
+                    <div th:if="${currentUser}" class=" mt-4 d-flex justify-content-end ">
+                        <form action="/comment">
+                            <input type="hidden" name="postId">
+                            <button type="submit" class="btn btn-secondary">
+                                Comments <span class="badge bg-dark" th:text="${post.comments.size()}">7</span>
+                            </button>
+
+<!--                            <a th:href="@{'/comment/?postId=' + ${post.id}}" class="btn btn-secondary mr-2">Comments</a>-->
+
+                        </form>
+                        <form th:unless="${likes.contains(post.id)}" action="/post/like" method="post" class="mr-2 ">
+                            <input type="hidden" name="postId" th:value="${post.id}">
+                            <button type="submit" class=" btn btn-outline-primary position-relative">
+                                Like
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" th:text="${post.likes.size()}">
+                                99+
+                                <span class="visually-hidden">unread messages</span>
+                                </span>
+                            </button>
+                        </form>
+                        <form th:if="${likes.contains(post.id)}" th:href="@{'/comment/' + ${post.id}}"  action="/post/dislike" method="post" class="mr-2">
+                            <input type="hidden" name="postId" th:value="${post.id}">
+                            <button type="submit" class="btn btn-primary position-relative">
+                                Like
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" th:text="${post.likes.size()}">
+                                99+
+                                <span class="visually-hidden">unread messages</span>
+                                </span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer Section -->
+<footer class="footer mt-auto py-3 bg-light">
+    <div class="container">
+        <form action="/message/send" method="post">
+            <div class="row">
+                <div class="col-md-9">
+                    <textarea class="form-control" id="message" name="body" rows="1" placeholder="Type your message here..." required></textarea>
+                </div>
+                <div class="col-md-3 d-flex justify-content-end">
+                    <button class="btn btn-primary" type="submit">Send</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</footer>
+
+</body>
+</html>

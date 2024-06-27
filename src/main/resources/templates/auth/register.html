@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <style>
+        .error {
+            color: red;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 class="mt-5">Register</h2>
+    <form id="registerForm" class="needs-validation" novalidate action="/auth/register" method="post">
+        <div class="form-group">
+            <label for="fullName">Full name</label>
+            <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter full name" required>
+            <div class="invalid-feedback">
+                Please enter a full name.
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
+            <div class="invalid-feedback">
+                Please enter a username.
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter phone number" required>
+            <div class="invalid-feedback">
+                Please enter a phone number.
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+            <div class="invalid-feedback">
+                Please enter a password.
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" required>
+            <div class="invalid-feedback">
+                Please confirm your password.
+            </div>
+            <div id="passwordError" class="error">Passwords do not match.</div>
+        </div>
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+</div>
+<script>
+    (function() {
+        'use strict';
+
+        window.addEventListener('load', function() {
+            let form = document.getElementById('registerForm');
+            form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+
+                let password = document.getElementById('password').value;
+                let confirmPassword = document.getElementById('confirmPassword').value;
+                let passwordError = document.getElementById('passwordError');
+
+                if (password !== confirmPassword) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    passwordError.style.display = 'block';
+                } else {
+                    passwordError.style.display = 'none';
+                }
+            }, false);
+        }, false);
+    })();
+</script>
+</body>
+</html>

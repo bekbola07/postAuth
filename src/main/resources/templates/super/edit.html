@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="eng">
+<head>
+    <title>Edit User Roles</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="/css/bootstrap.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1 class="mt-5">Edit Roles for User: <span th:text="${user.username}"></span></h1>
+    <form th:action="@{/super/edit/{id}(id=${user.id})}" th:object="${user}" method="post">
+        <div class="form-group">
+            <label>Full Name:</label>
+            <p class="form-control-plaintext" th:text="${user.fullName}"></p>
+        </div>
+        <div class="form-group">
+            <label>Phone Number:</label>
+            <p class="form-control-plaintext" th:text="${user.phoneNumber}"></p>
+        </div>
+        <div class="form-group">
+            <label for="roles">Roles:</label>
+            <select id="roles" name="roleIds" multiple class="form-control">
+                <option th:each="role : ${allRoles}" th:value="${role.id}"
+                        th:text="${role.name}" th:selected="${user.roles.contains(role)}">
+                </option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="/super" class="btn btn-secondary">Cancel</a> <!-- Assuming there's a user list page to navigate back to -->
+    </form>
+</div>
+<!-- Include Bootstrap JS and dependencies -->
+</body>
+</html>
